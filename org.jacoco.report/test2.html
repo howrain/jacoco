@@ -1,0 +1,228 @@
+<html>
+<head>
+    <meta charset="UTF-8"/>
+    <title>Highcharts 教程</title>
+
+    <link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css">
+    <script src="./jquery.min.js"></script>
+    <!--    <script src=="http://libs.baidu.com/jquery/2.1.4/jquery.min.js"></script>-->
+    <script src="./highcharts.js"></script>
+    <script src="./exporting.js"></script>
+    <style>
+        .tree {
+            min-width: 400px;
+            min-height: 450px;
+            /*max-height: 500px;*/
+            padding: 19px 19px 19px 19px;
+            margin: 15px 15px 15px 15px;
+            background-color: #fbfbfb;
+            border: 1px solid #999;
+            -webkit-border-radius: 4px;
+            -moz-border-radius: 4px;
+            border-radius: 4px;
+            -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+            -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+            box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05)
+        }
+
+        .tree ul {
+            padding-inline-start: 20px;
+
+        }
+
+        .tree li {
+            list-style-type: none;
+            margin: 0;
+            padding: 2px 0 0 0;
+            position: relative
+        }
+
+        .tree li::before, .tree li::after {
+            content: '';
+            left: -6px;
+            bottom: 1px;
+            position: absolute;
+            right: auto
+        }
+
+        .tree li::before {
+            border-left: 1px solid #999;
+            bottom: 50px;
+            height: 100%;
+            top: -12px;
+            width: 1px
+        }
+
+        .tree li::after {
+            border-top: 1px solid #999;
+            height: 10px;
+            top: 15px;
+            width: 15px
+        }
+
+        .tree li span {
+            -moz-border-radius: 5px;
+            -webkit-border-radius: 5px;
+            /*border:1px solid #999;*/
+            border-radius: 5px;
+            display: inline-block;
+            padding: 3px 8px;
+            text-decoration: none
+        }
+
+        .tree li.parent_li > span {
+            cursor: pointer
+        }
+
+        .tree > ul > li::before, .tree > ul > li::after {
+            border: 0
+        }
+
+        .tree li:last-child::before {
+            height: 30px
+        }
+
+        .tree li.parent_li > span:hover, .tree li.parent_li > span:hover + ul li span {
+            background: #d5d5d5;
+            border: 1px solid #94a0b4;
+            color: #000
+        }
+
+        .left {
+            float: left;
+            /*position: absolute;*/
+            top: 0;
+            left: 0;
+            width: 30%;
+            height: 100%;
+            margin: 20px 10px 40px 10px;
+            background-color: #CCCCCC
+        }
+
+        .right {
+            float: left;
+            /*margin-left: 200px;*/
+            height: 100%;
+            width: 66%;
+            margin: 20px 10px 40px 10px;
+            background-color: #0099FF
+        }
+    </style>
+</head>
+<body>
+<div class="left">
+    <div class="tree">
+        <div style="padding-left: 40px;color: #626262;margin-bottom: 10px;">
+            <span>Summary Report</span><br/>
+            <input type="text" id="search"  placeholder="查询内容" title="请输入查询内容" style="width: 80%">
+        </div>
+        <ul id="rootUL">
+            <li>
+                <span><i class="glyphicon glyphicon-triangle-right"></i></span> <a href="">1</a>
+                <ul>
+                    <li style="display: none;">
+                        <span><i class="glyphicon glyphicon-triangle-right"></i></span> <a href="">2</a>
+                        <ul>
+                            <li style="display: none;">
+                                <span><i class="glyphicon glyphicon-triangle-right"></i></span> <a href="">Grand
+                                Child</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li style="display: none;">
+                        <span><i class="glyphicon glyphicon-triangle-right"></i></span> <a href="">3</a>
+                        <ul>
+                            <li style="display: none;">
+                                <span><i class="glyphicon glyphicon-triangle-right"></i></span> <a href="">4</a>
+                            </li>
+                            <li style="display: none;">
+                                <span><i class="glyphicon glyphicon-triangle-right"></i></span> <a href="">5</a>
+                                <ul>
+                                    <li style="display: none;">
+                                        <span><i class="glyphicon glyphicon-triangle-right"></i></span> <a href="">6</a>
+                                        <ul>
+                                            <li style="display: none;">
+                                                <span><i class="glyphicon glyphicon-triangle-right"></i></span> <a
+                                                    href="">7</a>
+                                            </li>
+                                            <li style="display: none;">
+                                                <span><i class="glyphicon glyphicon-triangle-right"></i></span> <a
+                                                    href="">8</a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li style="display: none;">
+                                        <span><i class="glyphicon glyphicon-triangle-right"></i></span> <a href="">9</a>
+                                    </li>
+                                    <li style="display: none;">
+                                        <span><i class="glyphicon glyphicon-triangle-right"></i></span> <a href="">10</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li style="display: none;">
+                                <span><i class="glyphicon glyphicon-triangle-right"></i></span> <a href="">11</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+
+        </ul>
+    </div>
+</div>
+
+<div class="right"></div>
+<script language="JavaScript">
+
+    $(function () {
+        $('#search').bind('keyup', searchByInput);
+        function searchByInput() {
+            var filter = $("#search").val().toUpperCase();
+            var ul = $("#rootUL");
+            var li = ul.find('li');
+
+            if (filter === "") {
+                li.each(function () {
+                    $(this).hide();
+                    $(this).find(' > span > i').addClass('icon-plus-sign').removeClass('icon-minus-sign').addClass("glyphicon-triangle-right", "glyphicon").removeClass("glyphicon-triangle-bottom", "glyphicon");
+                });
+                let children = ul.children();
+                ul.children().show();
+                return;
+            }
+
+            li.each(function () {
+                var name = $(this).find("a").text();
+                var size=$(this).parents("ul").length;
+                if (size !== 0) {
+                    if (name.toUpperCase().indexOf(filter) >= 0) {
+                        $(this).show();
+                        $(this).find(' > span > i').addClass('icon-minus-sign').removeClass('icon-plus-sign').addClass("glyphicon-triangle-bottom", "glyphicon").removeClass("glyphicon-triangle-right", "glyphicon");
+
+                    } else {
+                        $(this).hide();
+                        $(this).find(' > span > i').addClass('icon-plus-sign').removeClass('icon-minus-sign').addClass("glyphicon-triangle-right", "glyphicon").removeClass("glyphicon-triangle-bottom", "glyphicon");
+                    }
+                }
+            });
+        }
+
+        $('.tree li:has(ul)').addClass('parent_li');
+        $('.tree li.parent_li > span').on('click', function (e) {
+            var children = $(this).parent('li.parent_li').find(' > ul > li');
+            if (children.is(":visible")) {
+                // 收起
+                children.hide('fast');
+                $(this).find(' > i').addClass('icon-plus-sign').removeClass('icon-minus-sign').addClass("glyphicon-triangle-right", "glyphicon").removeClass("glyphicon-triangle-bottom", "glyphicon");
+            } else {
+                // 展开
+                children.show('fast');
+                $(this).find(' > i').addClass('icon-minus-sign').removeClass('icon-plus-sign').addClass("glyphicon-triangle-bottom", "glyphicon").removeClass("glyphicon-triangle-right", "glyphicon");
+            }
+            e.stopPropagation();
+        });
+    });
+
+</script>
+</body>
+</html>

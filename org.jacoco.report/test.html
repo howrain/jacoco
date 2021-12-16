@@ -1,0 +1,124 @@
+<html>
+<head>
+    <meta charset="UTF-8"/>
+    <title>Highcharts 教程</title>
+    <script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="https://cdn.highcharts.com.cn/highcharts/highcharts.js"></script>
+    <script src="https://cdn.highcharts.com.cn/highcharts/modules/exporting.js"></script>
+    <style>
+        .main-content {
+            width: 100%;
+            height: 200px;
+            /*position:relative;*/
+            text-align: center;
+            margin: 0 auto;
+            /*padding: 0;*/
+            /*clear: both;*/
+            /*height: auto;*/
+        }
+
+        .main {
+            min-width: 200px;
+            /*width:25%;*/
+            height: 200px;
+            /*float: left;*/
+            /*margin: 0;*/
+            /*padding: 0;*/
+            display: inline-block;
+            /*_display: inline;*/
+            /**display: inline;*/
+            /*zoom: 1;*/
+            /*background: beige;*/
+            /*margin: auto; */
+            /*position: absolute;  */
+            /*top: 0; left: 0; bottom: 0; right: 0; */
+
+        }
+    </style>
+</head>
+<body>
+
+
+</div>
+<div class="main-content">
+    <div id="container1" class="main"></div>
+    <div id="container2" class="main"></div>
+    <div id="container3" class="main"></div>
+    <div id="container4" class="main"></div>
+</div>
+
+<script language="JavaScript">
+    $(document).ready(function () {
+        Highcharts.setOptions({
+            colors: ['#67C23A', '#C0C4CC']
+        });
+
+        function highcharts(container,title) {
+            var chart = Highcharts.chart({
+                chart: {
+                    spacing: [10, 0, 10, 0],
+                    renderTo: container,
+                    height: 200,
+                    width: 200
+                },
+                exporting: {
+                    enabled: false
+                },
+                credits: {
+                    enabled: false
+                },
+                title: {
+                    floating: true,
+                    text: '圆心显示的标题',
+                    style: {"fontSize": '12px'}
+
+                },
+                tooltip: {
+                    formatter: function () {
+                        return '<b>' + this.point.name +title+ ' :</b> ' + Highcharts.numberFormat(this.y, 0, '.');
+                    }
+                },
+                plotOptions: {
+                    pie: {
+                        size: '80%',
+                        borderWidth: 0,
+                        allowPointSelect: false,
+                        cursor: 'pointer',
+                        dataLabels: {
+                            enabled: false,
+                            format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                            style: {
+                                color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                            }
+                        }
+                    }
+                },
+                series: [{
+                    type: 'pie',
+                    innerSize: '80%',
+                    name: title,
+                    data: [
+                        ['已覆盖', 20],
+                        ['未覆盖', 80]
+                    ]
+                }]
+            }, function (c) { // 图表初始化完毕后的会掉函数
+                // 环形图圆心
+                var centerY = c.series[0].center[1],
+                    titleHeight = parseInt(c.title.styles.fontSize);
+                // 动态设置标题位置
+                c.setTitle({
+                    y: centerY + titleHeight / 2
+                });
+            });
+
+        }
+
+        highcharts("container1","行");
+        highcharts("container2","分支");
+        highcharts("container3","方法");
+        highcharts("container4","类");
+    });
+</script>
+</body>
+</html>
