@@ -1,17 +1,17 @@
 ### 基于jacoco二开的再次开发说明
 ###### 1.修改了生成报告的模板，主要参考 [Jacoco-报告改造实践](https://testerhome.com/topics/27721) 
 ![输入图片说明](./readme/jacoco报告.png "屏幕截图.png")
-###### 2.新增了调用的参数 --projectName、--appName、--envName、--timeStr，用于在报告中展示项目信息，用法参考
+###### 2.新增了调用的参数 --projectName(项目名称)、--appName(app名称)、--envName(环境名称)、--timeStr(报告生成日期，可不传，默认生成当天日期)，用于在报告中展示项目信息，用法参考
 ```
-java -jar {jar_path} report {jacocoexec_path} 
+java -jar org.jacoco.cli-0.8.7-SNAPSHOT-nodeps.jar report jacoco.exec
 --classfiles {classfiles} 
 --sourcefiles {sourcefiles}
 --html {html_report_path} 
 --diffCode {diffcode} 
---projectName {projectName} 
---appName {appName} 
---envName {envName} 
---timeStr {timeStr} 
+--projectName 项目1
+--appName app1
+--envName 测试环境
+--timeStr 2021-01-01
 --encoding=utf8
 ```
 #### 原项目地址 https://gitee.com/Dray/jacoco
