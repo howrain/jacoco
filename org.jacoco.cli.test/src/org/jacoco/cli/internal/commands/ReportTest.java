@@ -165,6 +165,19 @@ public class ReportTest extends CommandTestBase {
 	}
 
 	@Test
+	public void mytest2() throws Exception {
+
+		execute("report", "/Users/rayduan/jacoco/jacoco-demo.exec",
+				"--classfiles",
+				"/Users/rayduan/IdeaProjects\\base\\base-service\\application\\target\\classes\\com",
+				"--sourcefiles",
+				"/Users/rayduan/IdeaProjects\\base\\base-service\\application\\src\\main\\java ",
+				"--html", "/Users/rayduan/jacoco/report", "--xml",
+				"/Users/rayduan/jacoco/report.xml", "--diffCodeFiles", "");
+		assertOk();
+	}
+
+	@Test
 	public void should_use_all_values_when_multiple_classfiles_options_are_provided()
 			throws Exception {
 		File html = new File(tmp.getRoot(), "coverage");
